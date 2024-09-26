@@ -4,7 +4,7 @@ install.packages("data.table")
 install.packages("tidyr")
 install.packages("lubridate")
 
-# Load libraries
+# Load packages
 library(dplyr)
 library(data.table)
 library(tidyr)
