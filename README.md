@@ -1,7 +1,7 @@
 # PFW Data Preparation for Occupancy Modeling
 
 ## Overview
-This code details how to prepare raw data from **Project FeederWatch** (PFW), a citizen science project run by the Cornell Lab of Ornithology and Birds Canada, for use in R. The code template established is derived from *Greig et al. (2017)* and *Maron et al. (In Review)*. The provided script specifically walks through the steps needed to clean, filter, and zero-fill PFW data prior to modeling. Referring to the [Project FeederWatch Data Dictionary](https://clo-pfw-prod.s3.us-west-2.amazonaws.com/data/202306/FeederWatch_Data_Dictionary.xlsx) prior to using this code will help significantly in understanding each step and its results. 
+This code details how to prepare raw data from **Project FeederWatch** (PFW), a citizen science project run by the Cornell Lab of Ornithology and Birds Canada, for use in occpancy modeling in R. The code template established is derived from *Greig et al. (2017)* and *Maron et al. (In Review)*. The provided script specifically walks through the steps needed to clean, filter, and zero-fill PFW data prior to modeling. Referring to the [Project FeederWatch Data Dictionary](https://clo-pfw-prod.s3.us-west-2.amazonaws.com/data/202306/FeederWatch_Data_Dictionary.xlsx) prior to using this code will help significantly in understanding each step and its results. 
 
 ## Data Sourcing
 Data for use in this code can be downloaded directly from the [Project FeederWatch data request page](https://feederwatch.org/explore/raw-dataset-requests/). More information about the dataset is available from this publication:
