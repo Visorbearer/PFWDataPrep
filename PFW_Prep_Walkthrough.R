@@ -10,8 +10,7 @@ library(data.table)
 library(tidyr)
 library(lubridate)
 
-# Set your working directory to the folder where you have your data files
-# Replace "directory path" with your actual directory path
+# Replace "directory path" with your actual working directory path
 setwd("directory path")
 
 # Define the file paths for all PFW data you've downloaded
@@ -35,13 +34,11 @@ for (file in files) {
 regions <- c(#list here, you can bring the parenthesis back to this line after or just leave it on the next
   )
 
-# Defining the function to filter data by selected regions
 #SUBNATIONAL1_CODE is the state/province level identifier for PFW data
 filter_by_region <- function(df, regions) {
   df %>% filter(SUBNATIONAL1_CODE %in% regions)
 }
 
-# Use the filter function
 filtered_data_list <- list()
 for (df in data_list) {
   filtered_df <- filter_by_region(df, regions)
@@ -56,8 +53,6 @@ for (i in 1:length(filtered_data_list)) {
   print(paste("Rows in filtered data frame", i, ":", nrow(filtered_data_list[[i]])))
 }
 
-
-# Remove data_list (original dataset) to free up memory
 rm(data_list)
 gc()
 
@@ -70,16 +65,13 @@ combined_data <- bind_rows(filtered_data_list)
 #Just plug in whatever years you don't want to include at the end in YYYY format
 combined_data <- combined_data %>% filter(Year != YYYY)
 
-# Remove filtered_data_list to free up memory
 rm(filtered_data_list)
 gc()
 
 # Save the combined data as a CSV for backup
 write.csv(combined_data, "combined_PFW_data.csv", row.names = FALSE)
 
-##########################
-
-# Extract unique SUB_ID values (checklist IDs) and all associated columns
+# Extract unique SUB_ID values and all associated columns
 unique_checklists <- combined_data %>% distinct(SUB_ID, .keep_all = TRUE)
 
 # Create a dataframe for zero-filling, which will turn no detections into zeros
@@ -87,12 +79,9 @@ unique_checklists <- combined_data %>% distinct(SUB_ID, .keep_all = TRUE)
 zero_filled_data <- unique_checklists %>%
   mutate(SPECIES_CODE = "######", HOW_MANY = 0)
 
-# Join with the actual observations
 combined_data <- combined_data %>%
   right_join(zero_filled_data, by = c("SUB_ID", "SPECIES_CODE"))
 
-
-# Remove zero_filled_data and unique_checklists to free up memory
 rm(zero_filled_data, unique_checklists)
 gc()
 
@@ -116,7 +105,6 @@ print(remaining_plus_code_1)
 num_na_effort <- sum(is.na(target_data$EFFORT_HRS_ATLEAST))
 print(num_na_effort)
 
-#Remove NAs
 target_data <- target_data %>%
   filter(!is.na(EFFORT_HRS_ATLEAST))
 
@@ -147,7 +135,6 @@ effort_summary$EFFORT_HRS_BINNED <- factor(effort_summary$EFFORT_HRS_BINNED, lev
 
 # Remove invalid records
 #This is to avoid any unconfirmed observations, which are typically unlikely and may skew subsequent modeling
-# Remove instances where VALID = 0
 target_data <- target_data %>%
   filter(VALID != 0)
 
@@ -225,8 +212,6 @@ site_cov <- merge(occu, raw_sites_dates, by.x="LOC_ID", by.y="LOC_ID")
 #it will look something like c("ppt","tmean","HousingDensity") and so on to include all of your covariates
 site_cov <- site_cov[,c(######
                         )]
-
-#turn it into data table
 site_cov<-data.table(site_cov)
 
 # Calculate mean for numeric columns and retain first value for character columns
@@ -236,7 +221,6 @@ site_cov_mean <- site_cov[, c(lapply(.SD, mean, na.rm = TRUE),
                           .SDcols = c(#List of covariates here again
                             )]
 
-#write the table
 write.table(site_cov_mean, "site_cov.csv", sep=",",row.names=FALSE)
 
 #And now you're ready to start your modeling! Enjoy!
