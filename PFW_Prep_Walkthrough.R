@@ -203,7 +203,6 @@ effort_wide <- raw_sites_dates %>%
   spread(key = survey, value = EFFORT_HRS_ATLEAST, fill = NA)
 write.csv(effort_wide, "effort.csv", row.names = FALSE)
 
-
 #Bind site covariates from full data
 site_cov <- merge(occu, raw_sites_dates, by.x="LOC_ID", by.y="LOC_ID")
 
